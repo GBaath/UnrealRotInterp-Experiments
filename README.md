@@ -24,3 +24,5 @@ The actualy values printed after quaternion is the actual quaternion values, cus
 xya gets translated to a unit vector & the angle aka w is *kind of/acts like* cos((arccos vectorA dotPr vectorB)/2)
 
 <img src="Images\comparision.gif" /></td>
+
+*#ordermatters*
