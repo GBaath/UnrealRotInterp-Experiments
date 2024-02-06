@@ -18,4 +18,9 @@ tldr: Always convert to Quat before interpolating, FRotator values in code aren'
   </tr>
 </table>
 
+
+*Note*
+The actualy values printed after quaternion is the actual quaternion values, cus unreal likes to translate,
+xya gets translated to a unit vector & the angle aka w is *kind of/acts like* cos((arccos vectorA dotPr vectorB)/2)
+
 <img src="Images\comparision.gif" /></td>
