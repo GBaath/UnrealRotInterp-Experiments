@@ -2,6 +2,8 @@
 
 *These are future references for myself or for anyone struggling to grasp the differences between different types of rotation interpolation*
 
+tldr: Always convert to Quat before interpolating, FRotator values in code aren't the same as details panel.
+
 <table>
   <tr>
     <td width="50%"><img src="Images\QuatScaled.PNG" /></td>
