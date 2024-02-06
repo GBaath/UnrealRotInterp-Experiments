@@ -1,6 +1,6 @@
 # Rotation Interpolation Testing
 
-*Notes to self*
+*These are future references for myself or for anyone struggling to grasp the differences between different types of rotation interpolation*
 
 <table>
   <tr>
