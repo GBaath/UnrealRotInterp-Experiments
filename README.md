@@ -17,3 +17,5 @@ tldr: Always convert to Quat before interpolating, FRotator values in code aren'
     <td width="33%"><img src="Images\RInterpConst.PNG" /></td>
   </tr>
 </table>
+
+<img src="Images\comparision.gif" /></td>
