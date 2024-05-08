@@ -8,7 +8,7 @@ public class QuaternionTesting : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "CommonVectorFunctions" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
