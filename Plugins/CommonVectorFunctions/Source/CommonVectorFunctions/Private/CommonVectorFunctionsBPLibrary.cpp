@@ -61,10 +61,10 @@ FRotator UCommonVectorFunctionsBPLibrary::ClampRotationWithRadius(FRotator InRot
 
     return ClampedRotation;
 }
-FRotator UCommonVectorFunctionsBPLibrary::SmoothClampRotation(FRotator InRotator, FRotator ReferenceRotation, float DeltaTime, UPARAM(ref) double& Alpha, float& OutClampStrength, float InnerRadius = 15, float OuterRadius = 25, float ClampStrengthMultiplier = 1)
+FRotator UCommonVectorFunctionsBPLibrary::SmoothClampRotation(FRotator InRotator, FRotator ReferenceRotation, float DeltaTime, UPARAM(ref) double Alpha, float& OutClampStrength, FVector& DirClampVector, float InnerRadius = 15, float OuterRadius = 25, float ClampStrengthMultiplier = 1)
 {
 
-    OutClampStrength = 0;
+    //OutClampStrength = 0;
     //vector of inrot
     FVector v = (InRotator.Quaternion() * ReferenceRotation.Quaternion().Inverse()).Euler();//FVector(InRotator.Yaw, InRotator.Pitch, InRotator.Roll);
 
@@ -72,14 +72,17 @@ FRotator UCommonVectorFunctionsBPLibrary::SmoothClampRotation(FRotator InRotator
     if (v.Size() <= InnerRadius) {
         return InRotator;
     }
+    //moving back?
+    if ((InRotator.Quaternion() * ReferenceRotation.Quaternion()).GetAngle() < ReferenceRotation.Quaternion().GetAngle()) {
+        OutClampStrength = 0;
+        return InRotator;
+    }
 
     float factor = (OuterRadius - InnerRadius) / FMath::Clamp(OuterRadius - v.Size(), 1, 100);
 
 
 
-
     FQuat QuatInRotator = InRotator.Quaternion() * ReferenceRotation.Quaternion().Inverse();
-    FQuat QuatInverseIn = QuatInRotator.Inverse().GetNormalized();
     FQuat QuatScaledToMinRadius = FQuat(QuatInRotator.GetRotationAxis(), FMath::DegreesToRadians(InnerRadius));
     FQuat QuatScaledToMaxRadius = FQuat(QuatInRotator.GetRotationAxis(), FMath::DegreesToRadians(OuterRadius));
 
@@ -91,6 +94,8 @@ FRotator UCommonVectorFunctionsBPLibrary::SmoothClampRotation(FRotator InRotator
 
     //for use to ex. scale input speed
     OutClampStrength = Alpha;
+
+    DirClampVector = v.GetSafeNormal();
 
     //Slerped from outer towards inner
     FQuat T = FQuat::Slerp(QuatScaledToMinRadius, QuatScaledToMaxRadius, Alpha);
@@ -139,6 +144,10 @@ FVector UCommonVectorFunctionsBPLibrary::ClampToEllipsoid(FVector InV, FVector R
 }
 FRotator UCommonVectorFunctionsBPLibrary::NormalizeRotator(FRotator Rotator) {
     return Rotator.GetNormalized();
+}
+FVector UCommonVectorFunctionsBPLibrary::Rot2Vec(FRotator Rotator)
+{
+    return FVector(Rotator.Roll,Rotator.Pitch,Rotator.Yaw);
 }
 FVector UCommonVectorFunctionsBPLibrary::LocationFromDistanceAndRotation(FVector ReferencePoint, FRotator Rotation, float Distance)
 {
@@ -230,6 +239,24 @@ FRotator UCommonVectorFunctionsBPLibrary::RSphericalInterp(FRotator Current, FRo
 
     return Delta.Rotator();
 
+}
+FVector UCommonVectorFunctionsBPLibrary::ClampVectorInDirection(FVector Input, FVector Scaler)
+{
+    Scaler.X = FMath::Clamp(Scaler.X, -1, 1);
+    Scaler.Y = FMath::Clamp(Scaler.Y, -1, 1);
+    Scaler.Z = FMath::Clamp(Scaler.Z, -1, 1);
+
+    float scaleX, scaleY, scaleZ;
+
+    //vectors are pointing in same xyz direction from 0 
+    scaleX = Input.X * Scaler.X > 0;
+    scaleY = Input.Y * Scaler.Y > 0;
+    scaleZ = Input.Z * Scaler.Z > 0;
+
+    FVector retVec(Input.X - scaleX * FMath::Abs(Input.X) * Scaler.X, Input.Y - scaleY * FMath::Abs(Input.Y) * Scaler.Y, Input.Z - scaleZ * FMath::Abs(Input.Z) * Scaler.Z);
+
+
+    return retVec;
 }
 void UCommonVectorFunctionsBPLibrary::TransformVector(UPARAM(ref)FVector& V, const FTransform T)
 {

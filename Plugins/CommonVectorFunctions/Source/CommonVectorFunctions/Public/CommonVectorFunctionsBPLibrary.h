@@ -39,7 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions")
 	static FRotator ClampRotationWithRadius(FRotator InRotation, float Radius);
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions")
-	static FRotator SmoothClampRotation(FRotator InRotation, FRotator ReferenceRotation, float DeltaTime, UPARAM(ref) double& Alpha, float& OutClampStrength, float InnerRadius, float OuterRadius, float ClampStrengthMultiplier);
+	static FRotator SmoothClampRotation(FRotator InRotation, FRotator ReferenceRotation, float DeltaTime, UPARAM(ref) double Alpha, float& OutClampStrength, FVector& DirClampVector, float InnerRadius, float OuterRadius, float ClampStrengthMultiplier);
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions")
 	static FRotator SmoothClampRotationPerAxis(FRotator InRotation, FRotator ReferenceRotation, FRotator MinAngles, FRotator MaxAngles, float AngleThreshHold, float DeltaTime, float& OutClampStrength, float ClampStrengthMultiplier);
 
@@ -51,6 +51,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions",meta = (CompactNodeTitle = "norm"))
 	static FRotator NormalizeRotator(FRotator Rotator);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions",meta = (CompactNodeTitle = "R->V"))
+	static FVector Rot2Vec(FRotator Rotator);
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions",meta = (CompactNodeTitle = "r+"))
 	static FRotator QuickAddRotation(FRotator Rotation, FVector Add);
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions",meta = (CompactNodeTitle = "r-"))
@@ -65,6 +67,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions")
 	static FRotator RSphericalInterp(FRotator Current, FRotator Target, float DeltaTime, float Speed, UPARAM(ref)float& Alpha);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "VectorFunctions")
+	static FVector ClampVectorInDirection(FVector Input, FVector Scaler);
 
 	UFUNCTION(BlueprintCallable, Category = "VectorFunctions")
 	static void TransformVector(UPARAM(ref)FVector& V, const FTransform T);
